@@ -1,6 +1,7 @@
 #!/usr/bin/env mocha -R spec
 
 /*jshint -W053 */
+/* global BigInt */
 
 var assert = require("assert");
 var msgpackJS = "../index";
@@ -82,4 +83,14 @@ describe(TITLE, function() {
     assert.equal(decoded + "", source + "");
     assert.ok(decoded instanceof String);
   });
+
+  if ("undefined" !== typeof BigInt) {
+    it("BigInt", function() {
+      var source = BigInt(100);
+      var encoded = msgpack.encode(source);
+      var decoded = msgpack.decode(encoded);
+      assert.equal(decoded, source);
+      assert.equal(typeof decoded, 'bigint');
+    });
+  }
 });
