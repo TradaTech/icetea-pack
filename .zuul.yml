@@ -7,14 +7,18 @@ scripts:
   - "dist/msgpack.min.js"
 browsers:
   - name: ie
-    version: "9..latest"
+    version: ["9", "latest"]
+  - name: MicrosoftEdge
+    version: ["13", "latest"]
   - name: chrome
-    version: "latest"
+    version: ["27", "latest"]
   - name: firefox
-    version: "latest"
+    version: ["46", "latest"]
   - name: safari
-    version: "7..latest"
+    version: ["9", "latest"]
+  - name: ipad
+    version: ["10.3", "latest"]
   - name: iphone
-    version: ["7.1", "8.4", "9.3..latest"]
+    version: ["10.3", "latest"]
   - name: android
-    version: ["4.1", "4.4", "5.1..latest"]
+    version: "5.1"
