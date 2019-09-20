@@ -10,11 +10,9 @@ describe(TITLE, function() {
 
   var skip = ("undefined" !== typeof Symbol) ? it : it.skip;
   skip("Symbol", function() {
-    assert.deepEqual(toArray(msgpack.encode(Symbol("foo"))), [0xc0]);
+    assert.throws(function() {
+      msgpack.encode(Symbol("foo"));
+    }, Error);
   });
 
 });
-
-function toArray(buffer) {
-  return Array.prototype.slice.call(buffer);
-}

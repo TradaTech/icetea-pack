@@ -57,9 +57,11 @@ function run_tests(codecopt) {
 
   it("null", function() {
     [null, undefined].forEach(function(value) {
-      var encoded = msgpack.encode(value, options);
-      var decoded = msgpack.decode(encoded, options);
-      assert.equal(decoded, value);
+      if (value === null || !codecopt || codecopt.preset) {
+        var encoded = msgpack.encode(value, options);
+        var decoded = msgpack.decode(encoded, options);
+        assert.equal(decoded, value);
+      }
     });
   });
 
@@ -163,6 +165,9 @@ function run_tests(codecopt) {
     this.timeout(30000);
     pattern(0, 65537).forEach(function(length) {
       var value = new Array(length);
+      for (var i = 0; i < length; i++) {
+        value[i] = String.fromCharCode(i);
+      }
       assert.equal(value.length, length);
       var encoded = msgpack.encode(value, options);
       var decoded = msgpack.decode(encoded, options);
@@ -207,7 +212,7 @@ function run_tests(codecopt) {
   it("buffer", function() {
     this.timeout(30000);
     pattern(2, 65537).forEach(function(length, idx) {
-      var value = new Buffer(length);
+      var value = Buffer.alloc(length);
       value.fill(idx);
       assert.equal(value.length, length);
       var encoded = msgpack.encode(value, options);

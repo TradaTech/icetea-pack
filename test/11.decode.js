@@ -11,9 +11,17 @@ var HAS_UINT8ARRAY = ("undefined" !== typeof Uint8Array);
 ArrayBridge.concat = ArrayBridge_concat;
 Uint8ArrayBridge.concat = Uint8ArrayBridge_concat;
 
+var safeBuf = function(){
+  if (typeof arguments[0] === 'number') {
+    return Buffer.alloc(arguments[0]);
+  }
+  return Buffer.from.apply(Buffer, arguments);
+};
+safeBuf.concat = Buffer.concat;
+
 describe(TITLE, function() {
   describe("Buffer", function() {
-    run_tests(Buffer);
+    run_tests(safeBuf);
   });
 
   describe("Array", function() {
@@ -211,6 +219,11 @@ function run_tests(BUFFER) {
   // fixext 16 -- 0xd8
   it("d4-d8: fixext 1/2/4/8/16", function() {
     var ext, buf, act;
+
+    ext = BUFFER(1);
+    buf = BUFFER.concat([BUFFER([0xd4, 0x1e, 0]), ext]);
+    act = msgpack.decode(buf);
+    assert.deepEqual(act, undefined);
 
     ext = BUFFER(1);
     buf = BUFFER.concat([BUFFER([0xd4, 0]), ext]);
